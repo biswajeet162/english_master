@@ -1,8 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import '../services/audio_service.dart';
 import '../data/datasources/elevenlabs_remote_datasource.dart';
-import '../data/datasources/elevenlabs_tts_datasource.dart';
+import '../data/datasources/android_tts_datasource.dart';
 import '../data/datasources/openai_remote_datasource.dart';
 import '../data/repositories/audio_repository_impl.dart';
 import '../data/repositories/speech_repository_impl.dart';
@@ -35,12 +36,10 @@ final elevenLabsDataSourceProvider = Provider<ElevenLabsRemoteDataSource>((ref) 
   );
 });
 
-final elevenLabsTTSDataSourceProvider = Provider<ElevenLabsTTSDataSource>((ref) {
-  final client = ref.watch(httpClientProvider);
-  return ElevenLabsTTSDataSource(
-    client: client,
-    apiKey: ApiConfig.elevenLabsApiKey, // Use ElevenLabs API key for TTS
-    voiceId: ApiConfig.elevenLabsVoiceId,
+final androidTTSDataSourceProvider = Provider<AndroidTTSDataSource>((ref) {
+  final flutterTts = FlutterTts();
+  return AndroidTTSDataSource(
+    flutterTts: flutterTts,
   );
 });
 
@@ -60,11 +59,11 @@ final audioRepositoryProvider = Provider<AudioRepository>((ref) {
 
 final speechRepositoryProvider = Provider<SpeechRepository>((ref) {
   final elevenLabsDataSource = ref.watch(elevenLabsDataSourceProvider);
-  final elevenLabsTTSDataSource = ref.watch(elevenLabsTTSDataSourceProvider);
+  final androidTTSDataSource = ref.watch(androidTTSDataSourceProvider);
   final openaiDataSource = ref.watch(openaiDataSourceProvider);
   return SpeechRepositoryImpl(
     elevenLabsDataSource: elevenLabsDataSource,
-    elevenLabsTTSDataSource: elevenLabsTTSDataSource,
+    androidTTSDataSource: androidTTSDataSource,
     openaiDataSource: openaiDataSource,
   );
 });

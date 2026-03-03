@@ -130,6 +130,12 @@ class AudioService {
         await stopPlayback();
       }
 
+      // Handle Android TTS case - empty bytes means TTS is handled directly
+      if (audioBytes.isEmpty) {
+        AppLogger.info('Android TTS playback - audio bytes empty, TTS handled directly');
+        return;
+      }
+
       if (!AudioUtils.isValidAudioFormat(audioBytes)) {
         throw AudioException('Invalid audio format for playback');
       }

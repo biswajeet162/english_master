@@ -59,6 +59,9 @@ dependencies:
   
   # UUID for unique identifiers
   uuid: ^4.4.2
+  
+  # Text to Speech
+  flutter_tts: ^4.0.2
 
 dev_dependencies:
   flutter_test:

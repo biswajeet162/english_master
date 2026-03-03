@@ -53,6 +53,12 @@ class AudioRepositoryImpl implements AudioRepository {
   @override
   Future<Either<Failure, void>> playAudio(Uint8List audioBytes) async {
     try {
+      // Handle Android TTS case - empty bytes means TTS is handled directly
+      if (audioBytes.isEmpty) {
+        AppLogger.info('Android TTS playback - audio bytes empty, TTS handled directly');
+        return Either.right(null);
+      }
+      
       AppLogger.info('Playing audio (${audioBytes.length} bytes)');
       await audioService.playAudioBytes(audioBytes);
       return Either.right(null);

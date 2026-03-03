@@ -38,3 +38,8 @@ class ConfigurationException extends AppException {
 class TimeoutException extends AppException {
   const TimeoutException(String message, {String? code}) : super(message, code: code);
 }
+
+/// Text-to-Speech exceptions
+class TTSException extends AppException {
+  const TTSException(String message, {String? code}) : super(message, code: code);
+}
